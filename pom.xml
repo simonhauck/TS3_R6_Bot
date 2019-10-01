@@ -58,13 +58,6 @@
             <version>2.1.2.RELEASE</version>
         </dependency>
 
-        <!--R6 Api-->
-        <dependency>
-            <groupId>com.github.joecourtneyw</groupId>
-            <artifactId>R6J</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-
         <!--Retrofit 2.5-->
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
