@@ -1,6 +1,7 @@
 package io.github.simonhauck.ts3r6bot.service.chatbot;
 
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
+import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import io.github.simonhauck.ts3r6bot.model.ts3.TS3User;
 import io.github.simonhauck.ts3r6bot.persistence.UserServicePersistence;
 import io.github.simonhauck.ts3r6bot.ts3.TS3Service;
@@ -38,7 +39,8 @@ public class RegisterUser implements ITextCommand {
 
     @Override
     public String getExplanation() {
-        return "Register a user for the rainbow 6 siege ranks. Command: !register <Firstname> <Lastname> <UplayName>";
+        return "Register a user for the rainbow 6 siege ranks. Command: !register <Firstname> <Lastname> <UplayName>\n" +
+                "Register a other user for the rainbow6 siege ranks: !register <Firstname> <Lastname> <UplayName> <tsName>";
     }
 
     @Override
@@ -46,7 +48,7 @@ public class RegisterUser implements ITextCommand {
         String message = event.getMessage();
 
         int length = message.split(" ").length;
-        return length == 4;
+        return length == 4 || length == 5;
     }
 
     @Override
@@ -54,10 +56,25 @@ public class RegisterUser implements ITextCommand {
         String message = event.getMessage();
         String[] splittedMessage = message.split(" ");
 
-        TS3User user = new TS3User(event.getInvokerUniqueId(), splittedMessage[3], splittedMessage[1], splittedMessage[2]);
+        String uniqueIdentifierOfNewUser = event.getInvokerUniqueId();
+        //Name of ts3User was passed, update uniqueIdentifierOfNewUser
+        if (splittedMessage.length == 5) {
+            Client loadedClient = service.getTs3Api().getClientByNameExact(splittedMessage[4], true);
+            //Check if client was found
+            if (loadedClient == null) {
+                LOG.warn("Provided User not found, Register command failed! Calling User: " +
+                        event.getInvokerName() + ", Provided String: " + splittedMessage[4]);
+                service.getTs3AsyncApi().sendServerMessage("User with name " + splittedMessage[4] + " not found");
+                return;
+            } else {
+                uniqueIdentifierOfNewUser = loadedClient.getUniqueIdentifier();
+            }
+        }
+
+        TS3User user = new TS3User(uniqueIdentifierOfNewUser, splittedMessage[3], splittedMessage[1], splittedMessage[2]);
         LOG.info("Storing user: " + user);
         _persistence.insertUpdateUserWithTeamspeakUID(user);
-        service.getTs3AsyncApi().sendServerMessage("User data stored successfully");
+        service.getTs3AsyncApi().sendServerMessage("User data stored successfully for " + user);
     }
 
     //------------------------------------------------------------------------------------------------------------------

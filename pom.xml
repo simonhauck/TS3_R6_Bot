@@ -51,6 +51,13 @@
             <version>1.5.7</version>
         </dependency>
 
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.10.jre7</version>
+        </dependency>
+
         <!--JPA-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
