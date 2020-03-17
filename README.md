@@ -51,16 +51,17 @@ with the default settings one week. You can change the value in the application.
         ts3.queryPort=10011
         ts3.virtualServerID=1
         ```
-   * Next you have to create a database with the name ts3_bot. I have used mariaDB. I haven't tested other configurations.
+   * Next you have to create a database with the name ts3_bot. I have used PostgrSQL. With small configuration tweaks you can also use MariaDB, other configurations were not tested.
    * Next you have to set the database values in the application.properties.
         ```
-        spring.datasource.url=jdbc:mariadb://DATABASE_URL:DATABASE_PORT/ts3_bot
+        #Database parameters
+        spring.datasource.url=jdbc:postgresql://HOSTNAME:5432/DATABASE_NAME
         spring.datasource.username=DATABASE_USERNAME
-        spring.datasource.password=DATABASE_PASSWORD
-        spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+        spring.datasource.password=DATAbASE_PASSWORD
         spring.jpa.hibernate.ddl-auto=update
         spring.jpa.show-sql=false
-        spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL55Dialect
+        # disable warning on startup on postgreSQL
+        spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
         ```   
    * Next you have to set the platform(e.g. uplay, playstation, xbox) and the location in the application.properties.
         ```
