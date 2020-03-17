@@ -39,8 +39,8 @@ public class RegisterUser implements ITextCommand {
 
     @Override
     public String getExplanation() {
-        return "Register a user for the rainbow 6 siege ranks. Command: !register <Firstname> <Lastname> <UplayName>\n" +
-                "Register a other user for the rainbow6 siege ranks: !register <Firstname> <Lastname> <UplayName> <tsName>";
+        return "Register an user for the rainbow 6 siege ranks. Command: !register <Firstname> <Lastname> <UplayName>\n" +
+                "-Register an other user for the rainbow6 siege ranks: !register <Firstname> <Lastname> <UplayName> <tsName>";
     }
 
     @Override
